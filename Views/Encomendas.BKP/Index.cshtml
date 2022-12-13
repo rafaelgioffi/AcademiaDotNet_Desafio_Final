@@ -1,0 +1,66 @@
+﻿@model IEnumerable<SistemaDeEncomendas.Models.Encomendas>
+
+@{
+    ViewData["Title"] = "Encomendas";
+}
+
+<div class="row align-items-center">
+    <div class="col-auto d-flex align-items-center">
+        <h1 class="navbar-brand text-dark d-flex align-items-center align-self-stretch"><i class="fa-regular fa-handshake fa-2x"></i>&nbsp;Encomendas</h1>
+    </div>
+    <div class="col-auto">
+    <a asp-action="Create">
+            <button class="btn-sm btn-primary"><i class="fa-regular fa-thumbs-up"></i> Nova encomenda</button>
+        </a>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <thead class="text-dark">
+        <tr class="text-center">
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FormaPagamento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Clientes)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            <tr class="text-center text-dark">
+            <td>
+                    <a class="text-primary" asp-action="Details" asp-route-id="@item.Id">
+                @Html.DisplayFor(modelItem => item.Descricao)
+                </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FormaPagamento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Clientes.Nome)
+            </td>
+                <td class="p-2">
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square text-primary"></i></a> &nbsp; 
+                        <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash-can text-danger"></i></a>
+                </td>
+            </tr>
+}
+    </tbody>
+</table>

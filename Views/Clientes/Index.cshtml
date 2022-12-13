@@ -1,0 +1,88 @@
+﻿@model IEnumerable<SistemaDeEncomendas.Models.Clientes>
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<div class="row align-items-center">
+    <div class="col-auto d-flex align-items-center">        
+        <h1 class="navbar-brand text-dark d-flex align-items-center align-self-stretch"><i class="fa-solid fa-address-card fa-2x"></i>&nbsp;Clientes</h1>
+    </div>
+    <div class="col-auto">
+    <a asp-action="Create">
+            <button class="btn-sm btn-primary"><i class="fa-regular fa-address-book"></i> Novo cliente</button>
+        </a>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <thead class="table-dark text-light">
+        <tr class="text-center">
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Endereco)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TelAdc)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class="text-center text-dark">                
+                <td>
+                    <a class="text-primary" asp-action="Details" asp-route-id="@item.Id">
+                @Html.DisplayFor(modelItem => item.Nome)
+                </a>
+            </td>
+                @if(string.IsNullOrEmpty(item.Endereco))
+                {
+                    <td class="text-secondary">---</td>
+                } else
+                {
+                    <td>
+                    @Html.DisplayFor(modelItem => item.Endereco)
+                    </td>                    
+                }
+
+                @if (string.IsNullOrEmpty(item.Email))
+                {
+                    <td class="text-secondary">---</td>
+                }
+                else
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                }
+            <td>
+                @Html.DisplayFor(modelItem => item.Tel)
+            </td>
+                @if (string.IsNullOrEmpty(item.TelAdc))
+                {
+                    <td class="text-secondary">---</td>
+                }
+                else
+                {
+            <td>
+                @Html.DisplayFor(modelItem => item.TelAdc)
+            </td>
+                }
+                
+            <td class="p-2">
+                <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square text-primary"></i></a> &nbsp; 
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash-can text-danger"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
