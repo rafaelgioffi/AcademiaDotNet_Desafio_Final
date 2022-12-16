@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemaDeEncomendas.Models;
@@ -14,7 +15,9 @@ namespace SistemaDeEncomendas.Controllers
             _context = context;
         }
 
+
         // GET: Encomendas
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var context = _context.Encomendas.Include(e => e.Clientes);
@@ -22,6 +25,7 @@ namespace SistemaDeEncomendas.Controllers
         }
 
         // GET: Encomendas/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Encomendas == null)
@@ -41,6 +45,7 @@ namespace SistemaDeEncomendas.Controllers
         }
 
         // GET: Encomendas/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["ClientesId"] = new SelectList(_context.Clientes, "Id", "Nome");
@@ -61,13 +66,15 @@ namespace SistemaDeEncomendas.Controllers
             //    return RedirectToAction(nameof(Index));
             //}
             //personalizado
-                _context.Encomendas.Add(encomendas);
-                await _context.SaveChangesAsync();
+            _context.Encomendas.Add(encomendas);
+            await _context.SaveChangesAsync();
             ViewData["ClientesId"] = new SelectList(_context.Clientes, "Id", "Nome", encomendas.ClientesId);
-            return View(encomendas);
+            return RedirectToAction(nameof(Index));
+            //return View(encomendas);
         }
 
         // GET: Encomendas/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Encomendas == null)
@@ -82,16 +89,6 @@ namespace SistemaDeEncomendas.Controllers
                 return NotFound();
             }
 
-            //int posicao = valorATratar.LastIndexOf('.');
-            ////valorATratar[posicao] = ',';
-
-
-            //StringBuilder sb = new StringBuilder(valorATratar);
-            //sb[posicao] = ',';
-            //valorATratar = sb.ToString();
-
-            //encomendas.Valor = decimal.Parse(valorATratar);
-
             ViewData["ClientesId"] = new SelectList(_context.Clientes, "Id", "Nome", encomendas.ClientesId);
             return View(encomendas);
         }
@@ -101,6 +98,8 @@ namespace SistemaDeEncomendas.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Descricao,FormaPagamento,Status,Valor,ClientesId")] Encomendas encomendas)
         {
 
@@ -113,13 +112,11 @@ namespace SistemaDeEncomendas.Controllers
             //{
             try
             {
-                //string tratarValor = encomendas.Valor.ToString();
-                //tratarValor = tratarValor.Insert(tratarValor.Length - 2, ",");
-                //encomendas.Valor = decimal.Parse(tratarValor);
-
                 _context.Encomendas.Update(encomendas);
                 await _context.SaveChangesAsync();
-                //movido do final do try...
+
+                ViewData["ClientesId"] = new SelectList(_context.Clientes, "Id", "Nome", encomendas.ClientesId);
+                //return View(encomendas);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -136,12 +133,11 @@ namespace SistemaDeEncomendas.Controllers
                     return NotFound(ex.Message);
                 }
             }
-            //}
-            ViewData["ClientesId"] = new SelectList(_context.Clientes, "Id", "Nome", encomendas.ClientesId);
-            return View(encomendas);
+            //}              
         }
 
         // GET: Encomendas/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Encomendas == null)
@@ -156,13 +152,14 @@ namespace SistemaDeEncomendas.Controllers
             {
                 return NotFound();
             }
-
             return View(encomendas);
         }
 
         // POST: Encomendas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Encomendas == null)

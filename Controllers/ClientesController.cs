@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemaDeEncomendas.Models;
+using System.Security.Cryptography;
 
 namespace SistemaDeEncomendas.Controllers
 {
@@ -14,12 +16,14 @@ namespace SistemaDeEncomendas.Controllers
         }
 
         // GET: Clientes
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Clientes.ToListAsync());
         }
 
         // GET: Clientes/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Clientes == null)
@@ -33,11 +37,11 @@ namespace SistemaDeEncomendas.Controllers
             {
                 return NotFound();
             }
-
             return View(clientes);
         }
 
         // GET: Clientes/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -46,6 +50,7 @@ namespace SistemaDeEncomendas.Controllers
         // POST: Clientes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome,Endereco,Email,Tel,TelAdc")] Clientes clientes)
@@ -56,10 +61,15 @@ namespace SistemaDeEncomendas.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
             }
-            return View(clientes);
+            else
+            {
+                return NotFound(ModelState);
+            }
+            //return View(clientes);
         }
 
         // GET: Clientes/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Clientes == null)
@@ -78,6 +88,7 @@ namespace SistemaDeEncomendas.Controllers
         // POST: Clientes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Endereco,Email,Tel,TelAdc")] Clientes clientes)
@@ -87,9 +98,9 @@ namespace SistemaDeEncomendas.Controllers
                 return NotFound();
             }
 
-            //if (ModelState.IsValid)
-            //{
-            try
+            if (ModelState.IsValid)
+            {
+                try
             {
                 _context.Clientes.Update(clientes);
                 await _context.SaveChangesAsync();
@@ -106,11 +117,12 @@ namespace SistemaDeEncomendas.Controllers
                 }
             }
             return RedirectToAction(nameof(Index));
-            //}
+            }
             return View(clientes);
         }
 
         // GET: Clientes/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Clientes == null)
@@ -129,6 +141,7 @@ namespace SistemaDeEncomendas.Controllers
         }
 
         // POST: Clientes/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

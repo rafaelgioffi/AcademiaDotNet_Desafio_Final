@@ -16,35 +16,33 @@
     </div>
 </div>
 
-<table class="table table-hover">
+<table id="tableEnc" class="table table-hover" style="width:100%">
     <thead class="text-light table-dark">
         <tr class="text-center">
-            <th>
-                @*@Html.DisplayNameFor(model => model.Descricao)*@
+            <th class="text-center">              
                 Descrição
             </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.FormaPagamento)*@
+            <th class="text-center">
                 Pagamento
             </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Status)*@
+            <th class="text-center">                
                 Status
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Valor)
             </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Clientes)*@
+            <th class="text-center">
                 Cliente
             </th>
-            <th></th>
+            <th class="text-center">                
+                Ações
+            </th>            
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
             <tr class="text-center text-dark">
-                <td style ="max-width: 350px">
+                <td>
                     <a class="text-primary" asp-action="Details" asp-route-id="@item.Id">               
                 @Html.DisplayFor(modelItem => item.Descricao)
                 </a>

@@ -18,15 +18,12 @@ namespace SistemaDeEncomendas.Models
         [Display(Name = "Status*")]
         public string Status { get; set; }
 
-        [Required(ErrorMessage = "É obrigatório informar o valor do pedido")]
-        //[Range(0, 9999.99)]
-        [DataType(DataType.Currency)]
-        //[Column(TypeName = "decimal(18,2)")]
-        //[DisplayFormat(DataFormatString = "{0:F2}")]
+        [Required(ErrorMessage = "É obrigatório informar o valor do pedido")]        
+        [DataType(DataType.Currency)]        
         [Display(Name = "Valor")]
         public decimal Valor { get; set; }
 
-        public Clientes Clientes { get; set; }
+        public virtual Clientes Clientes { get; set; }
 
         [Required(ErrorMessage = "É obrigatório associar a encomenda a um cliente")]
         [Display(Name = "Cliente*")]

@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using SistemaDeEncomendas.Models;
-using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 
 namespace SistemaDeEncomendas
@@ -19,6 +20,17 @@ namespace SistemaDeEncomendas
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            //Authentication builder.
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => options.LoginPath = "/Usuario/LoginPage");
+
+            builder.Services.Configure<CookiePolicyOptions>(
+                options =>
+                {
+                    options.CheckConsentNeeded = context => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -31,36 +43,36 @@ namespace SistemaDeEncomendas
 
             //correção do idioma...
             var cultureInfo = new CultureInfo("pt-BR");
-            //var localOptions = new RequestLocalizationOptions
-            //{
-            //    DefaultRequestCulture = new RequestCulture(cultureInfo),
-            //    SupportedCultures = new List<CultureInfo> { cultureInfo },
-            //    SupportedUICultures = new List<CultureInfo> { cultureInfo }
-            //};
-
-            //app.UseRequestLocalization(localOptions);
 
             cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
             cultureInfo.NumberFormat.CurrencyDecimalSeparator = ",";
             cultureInfo.NumberFormat.NumberDecimalDigits = 2;
             cultureInfo.NumberFormat.CurrencyDecimalDigits = 2;
-            //cultureInfo.NumberFormat.NumberGroupSeparator = ".";
-            //cultureInfo.NumberFormat.CurrencyGroupSeparator = ".";
+
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
             Thread.CurrentThread.CurrentCulture = cultureInfo;
             //fim da correção do idioma...
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Encomendas}/{action=Index}/{id?}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app authentication
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+                HttpOnly = HttpOnlyPolicy.Always
+            });
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Encomendas}/{action=Index}/{id?}");
+            app.UseAuthentication();
+            app.UseAuthorization();
+            //app.UseCookiePolicy();
 
             app.Run();
         }

@@ -1,0 +1,39 @@
+﻿@model SistemaDeEncomendas.Models.Usuario
+
+@{
+    ViewData["Title"] = "Acesso não autorizado";
+}
+
+<div class="row align-items-center">
+    <div class="col-auto d-flex align-items-center">
+        <h3 class="navbar-brand text-dark d-flex align-items-center align-self-stretch"><i class="fa-solid fa-lock fa-2x"></i>&nbsp;Área restrita</h3>
+    </div>
+    <h6 class="text-black-50">É necessário realizar login para acessar o sistema</h6>
+</div>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="form-floating mb-3 form-group">
+                <input class="form-control" asp-for="Login" type="text" name="Login" placeholder="Informe o Login" />
+                <label for="Login">Usuário</label>
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3 form-group">
+                <input class="form-control" asp-for="Senha" type="password" name="Senha" placeholder="Informe sua senha" />
+                <label for="Senha">Senha</label>
+                <span asp-validation-for="Senha" class="text-danger"></span>
+                @if (ViewBag.Erro != null)
+                {
+                    <h6 class="text-danger">@ViewBag.Erro</h6>
+                }
+            </div>
+            <button class="btn btn-primary" type="submit">Logon</button>
+        </div>
+    </div>
+}

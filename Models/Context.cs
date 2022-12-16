@@ -8,13 +8,9 @@ namespace SistemaDeEncomendas.Models
 
         public DbSet<Encomendas> Encomendas { get; set; }
         public DbSet<Clientes> Clientes { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Encomendas>()
-                .HasOne(c => c.Clientes)
-                .WithMany(e => e.Encomendas)
-                .HasForeignKey(c => c.ClientesId);
-
+        {         
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Encomendas>()
                 .Property(e => e.Valor)

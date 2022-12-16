@@ -15,31 +15,33 @@
     </div>
 </div>
 
-<table class="table table-hover">
+<table id="tableCli" class="table table-hover">
     <thead class="table-dark text-light">
         <tr class="text-center">
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Endereco)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Email)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Tel)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.TelAdc)
             </th>
-            <th></th>
+            <th class="text-center">
+                Ações
+                </th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr class="text-center text-dark">                
-                <td>
+        <tr class="text-center text-dark">
+                <td style="max-width: 350px">
                     <a class="text-primary" asp-action="Details" asp-route-id="@item.Id">
                 @Html.DisplayFor(modelItem => item.Nome)
                 </a>
@@ -78,7 +80,7 @@
             </td>
                 }
                 
-            <td class="p-2">
+                <td class="p-2" style="min-width: 60px; max-width: 60px;">
                 <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square text-primary"></i></a> &nbsp; 
                     <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash-can text-danger"></i></a>
             </td>

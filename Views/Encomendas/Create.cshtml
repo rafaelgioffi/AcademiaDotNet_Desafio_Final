@@ -1,5 +1,4 @@
 ﻿@model SistemaDeEncomendas.Models.Encomendas
-@*@System.Globalization.CultureInfo.CurrentUICulture*@
 
 @{
     ViewData["Title"] = "Nova Encomenda";
@@ -38,6 +37,7 @@
                 <label asp-for="Status" class="control-label"></label>
                 <select asp-for="Status" class="form-control form-select">
                     <option value="Preparando orçamento" selected>Preparando orçamento</option>
+                    <option value="Aguardando cliente">Aguardando cliente</option>
                     <option value="Em produção">Em produção</option>
                     <option value="Aguardando retirada">Aguardando retirada</option>
                     <option value="Entregue">Entregue</option>
